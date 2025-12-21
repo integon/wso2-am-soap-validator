@@ -1,0 +1,20 @@
+{
+  "type": "operation_policy_specification",
+  "version": "v4.6.0",
+  "data": {
+    "category": "Mediation",
+    "name": "validateSOAP",
+    "version": "v1",
+    "displayName": "SOAP Validate Policy",
+    "description": "This policy calls the custom SOAPValidationMediator",
+    "applicableFlows": [
+      "request", "response"
+    ],
+    "supportedGateways": [
+      "Synapse"
+    ],
+    "supportedApiTypes": [
+      "SOAP"
+    ]
+  }
+}

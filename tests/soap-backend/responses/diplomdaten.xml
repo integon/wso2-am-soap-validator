@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:ns0="http://www.medreg.ch/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns0:GetDiplomdatenResponse>
+            <ns0:GetDiplomdatenResult>
+                <ns0:Diplomdaten>
+                    <ns0:IdMedizinalperson>1</ns0:IdMedizinalperson>
+                    <ns0:IdPerson>1</ns0:IdPerson>
+                    <ns0:Name>STRING</ns0:Name>
+                    <ns0:Vorname>STRING</ns0:Vorname>
+                    <ns0:IdDiplom>1</ns0:IdDiplom>
+                    <ns0:IdDiplomart>1</ns0:IdDiplomart>
+                    <ns0:Diplomart>STRING</ns0:Diplomart>
+                    <ns0:OrtErteilung>STRING</ns0:OrtErteilung>
+                    <ns0:IdLand>1</ns0:IdLand>
+                    <ns0:Land>STRING</ns0:Land>
+                    <ns0:DatumErteilung>STRING</ns0:DatumErteilung>
+                    <ns0:DatumAnerkennungCH>STRING</ns0:DatumAnerkennungCH>
+                    <ns0:DatumGleichwertigkeit>STRING</ns0:DatumGleichwertigkeit>
+                    <ns0:IdDiplomtyp>1</ns0:IdDiplomtyp>
+                    <ns0:Diplomtyp>STRING</ns0:Diplomtyp>
+                    <ns0:DiplomartShort>STRING</ns0:DiplomartShort>
+                    <ns0:LandShort>STRING</ns0:LandShort>
+                    <ns0:DiplomtypShort>STRING</ns0:DiplomtypShort>
+                    <ns0:UserNameErstellung>STRING</ns0:UserNameErstellung>
+                    <ns0:DatumMutation>STRING</ns0:DatumMutation>
+                </ns0:Diplomdaten>
+            </ns0:GetDiplomdatenResult>
+        </ns0:GetDiplomdatenResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,16 @@
+{
+  "name": "testservice-test7",
+  "version": "v1",
+  "isDefaultVersion": "true",
+  "context": "/testservice-test7",
+  "endpointConfig": {
+    "production_endpoints": {
+      "url": "http://backend:8080/testservice",
+      "type": "http"
+    },
+    "endpoint_type": "http"
+  },
+  "wsdlInfo": {
+    "type": "ZIP"
+  }
+}

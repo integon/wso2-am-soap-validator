@@ -1,0 +1,15 @@
+services:
+  am:
+    image: wso2/wso2am:4.6.0
+    container_name: apim
+    ports:
+      - "9443:9443"
+      - "8280:8280"
+      - "8243:8243"
+    volumes:
+      - ./resources/lib/mediator.jar:/home/wso2carbon/wso2am-4.6.0/repository/components/lib/mediator.jar
+      - ./resources/conf/log4j2.properties:/home/wso2carbon/wso2am-4.6.0/repository/conf/log4j2.properties
+  soap-backend:
+    container_name: backend
+    build:
+      context: soap-backend

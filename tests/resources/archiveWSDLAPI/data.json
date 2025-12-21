@@ -1,0 +1,17 @@
+{
+  "name": "ArchiveWSDLAPI",
+  "version": "1.0.0",
+  "context": "/archivewsdl",
+  "endpointConfig": {
+    "production_endpoints": {
+      "url": "http://backend:8080",
+      "type": "http"
+    },
+    "sandbox_endpoints": {
+      "url": "http://backend:8080",
+      "type": "http"
+    },
+    "endpoint_type": "http"
+  }
+}
+

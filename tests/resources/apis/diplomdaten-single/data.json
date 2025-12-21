@@ -1,0 +1,14 @@
+{
+  "name": "diplomdaten-single",
+  "version": "v1",
+  "isDefaultVersion": "true",
+  "context": "/diplomdaten-single",
+  "endpointConfig": {
+    "production_endpoints": {
+      "url": "http://backend:8080/diplomdaten",
+      "type": "http"
+    },
+    "endpoint_type": "http"
+  }
+}
+

@@ -1,0 +1,12 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:ns0="http://www.medreg.ch/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns0:GetDiplomdaten>
+            <ns0:benutzername>STRING</ns0:benutzername>
+            <ns0:passwort>STRING</ns0:passwort>
+            <ns0:idPerson>1</ns0:idPerson>
+            <ns0:idDiplom>1</ns0:idDiplom>
+        </ns0:GetDiplomdaten>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

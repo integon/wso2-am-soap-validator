@@ -1,0 +1,17 @@
+{
+  "name": "diplomdaten-multi",
+  "version": "v1",
+  "isDefaultVersion": "true",
+  "context": "/diplomdaten-multi",
+  "endpointConfig": {
+    "production_endpoints": {
+      "url": "http://backend:8080/diplomdaten",
+      "type": "http"
+    },
+    "endpoint_type": "http"
+  },
+  "wsdlInfo": {
+    "type": "ZIP"
+  }
+}
+

@@ -1,0 +1,8 @@
+{
+  "callbackUrl":"foo.bar.dummy",
+  "clientName":"test_api_publisher",
+  "owner":"admin",
+  "grantType":"client_credentials password refresh_token",
+  "saasApp":true
+}
+

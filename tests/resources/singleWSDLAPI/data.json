@@ -1,0 +1,16 @@
+{
+    "name": "SingleWSDLAPI",
+    "version": "1.0.0",
+    "context": "/",
+    "endpointConfig": {
+        "production_endpoints": {
+            "url": "http://soap-backend:8080",
+            "type": "http"
+        },
+        "sandbox_endpoints": {
+            "url": "http://soap-backend:8080",
+            "type": "http"
+        },
+        "endpoint_type": "http"
+    }
+}

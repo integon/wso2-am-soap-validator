@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.medreg.ch/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.medreg.ch/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema>
+      <s:import namespace="http://www.medreg.ch/" schemaLocation="DiplomdatenWebService.xsd"/>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetDiplomdatenSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDiplomdaten" />
+  </wsdl:message>
+  <wsdl:message name="GetDiplomdatenSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDiplomdatenResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateDiplomdatenV2SoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateDiplomdatenV2" />
+  </wsdl:message>
+  <wsdl:message name="UpdateDiplomdatenV2SoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateDiplomdatenV2Response" />
+  </wsdl:message>
+  <wsdl:message name="InsertDiplomdatenV2SoapIn">
+    <wsdl:part name="parameters" element="tns:InsertDiplomdatenV2" />
+  </wsdl:message>
+  <wsdl:message name="InsertDiplomdatenV2SoapOut">
+    <wsdl:part name="parameters" element="tns:InsertDiplomdatenV2Response" />
+  </wsdl:message>
+  <wsdl:message name="DeleteDiplomdatenSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteDiplomdaten" />
+  </wsdl:message>
+  <wsdl:message name="DeleteDiplomdatenSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteDiplomdatenResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DiplomdatenWebServiceSoap">
+    <wsdl:operation name="GetDiplomdaten">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Diplomdaten</wsdl:documentation>
+      <wsdl:input message="tns:GetDiplomdatenSoapIn" />
+      <wsdl:output message="tns:GetDiplomdatenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateDiplomdatenV2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Diplomdaten ändern, Version 2</wsdl:documentation>
+      <wsdl:input message="tns:UpdateDiplomdatenV2SoapIn" />
+      <wsdl:output message="tns:UpdateDiplomdatenV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertDiplomdatenV2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Diplomdaten einfügen, Version 2</wsdl:documentation>
+      <wsdl:input message="tns:InsertDiplomdatenV2SoapIn" />
+      <wsdl:output message="tns:InsertDiplomdatenV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDiplomdaten">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Diplomdaten löschen</wsdl:documentation>
+      <wsdl:input message="tns:DeleteDiplomdatenSoapIn" />
+      <wsdl:output message="tns:DeleteDiplomdatenSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DiplomdatenWebServiceSoap" type="tns:DiplomdatenWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDiplomdaten">
+      <soap:operation soapAction="http://www.medreg.ch/GetDiplomdaten" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateDiplomdatenV2">
+      <soap:operation soapAction="http://www.medreg.ch/UpdateDiplomdatenV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertDiplomdatenV2">
+      <soap:operation soapAction="http://www.medreg.ch/InsertDiplomdatenV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDiplomdaten">
+      <soap:operation soapAction="http://www.medreg.ch/DeleteDiplomdaten" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="DiplomdatenWebServiceSoap12" type="tns:DiplomdatenWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDiplomdaten">
+      <soap12:operation soapAction="http://www.medreg.ch/GetDiplomdaten" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateDiplomdatenV2">
+      <soap12:operation soapAction="http://www.medreg.ch/UpdateDiplomdatenV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertDiplomdatenV2">
+      <soap12:operation soapAction="http://www.medreg.ch/InsertDiplomdatenV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDiplomdaten">
+      <soap12:operation soapAction="http://www.medreg.ch/DeleteDiplomdaten" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DiplomdatenWebService">
+    <wsdl:port name="DiplomdatenWebServiceSoap" binding="tns:DiplomdatenWebServiceSoap">
+      <soap:address location="http://localhost:8080/diplomdaten" />
+    </wsdl:port>
+    <wsdl:port name="DiplomdatenWebServiceSoap12" binding="tns:DiplomdatenWebServiceSoap12">
+      <soap12:address location="http://localhost:8080/diplomdaten" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

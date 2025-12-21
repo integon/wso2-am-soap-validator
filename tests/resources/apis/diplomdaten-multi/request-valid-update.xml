@@ -1,0 +1,18 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:ns0="http://www.medreg.ch/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns0:UpdateDiplomdatenV2>
+            <ns0:benutzername>STRING</ns0:benutzername>
+            <ns0:passwort>STRING</ns0:passwort>
+            <ns0:idDiplom>1</ns0:idDiplom>
+            <ns0:idDiplomart>1</ns0:idDiplomart>
+            <ns0:ortErteilung>STRING</ns0:ortErteilung>
+            <ns0:idLand>1</ns0:idLand>
+            <ns0:datumErteilung>STRING</ns0:datumErteilung>
+            <ns0:datumAnerkennungCH>STRING</ns0:datumAnerkennungCH>
+            <ns0:datumGleichwertigkeit>STRING</ns0:datumGleichwertigkeit>
+            <ns0:idDiplomtyp>1</ns0:idDiplomtyp>
+        </ns0:UpdateDiplomdatenV2>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

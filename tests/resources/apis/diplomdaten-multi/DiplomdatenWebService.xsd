@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <s:schema elementFormDefault="qualified" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.medreg.ch/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.medreg.ch/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+      <s:element name="GetDiplomdaten">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="benutzername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idPerson" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplom" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDiplomdatenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDiplomdatenResult" type="tns:ArrayOfDiplomdaten" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDiplomdaten">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Diplomdaten" nillable="true" type="tns:Diplomdaten" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Diplomdaten">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdMedizinalperson" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdPerson" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vorname" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDiplom" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDiplomart" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diplomart" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrtErteilung" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdLand" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DatumErteilung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DatumAnerkennungCH" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DatumGleichwertigkeit" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDiplomtyp" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diplomtyp" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DiplomartShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LandShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DiplomtypShort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserNameErstellung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DatumMutation" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateDiplomdatenV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="benutzername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplom" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplomart" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ortErteilung" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idLand" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumErteilung" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumAnerkennungCH" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumGleichwertigkeit" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplomtyp" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateDiplomdatenV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateDiplomdatenV2Result" type="tns:UpdateResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UpdateResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:MutationResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="MutationResponse" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fields" type="tns:ArrayOfMutationField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMutationField">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Field" nillable="true" type="tns:MutationField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MutationField">
+        <s:attribute name="Name" type="s:string" />
+        <s:attribute name="Ist-Wert" type="s:string" />
+        <s:attribute name="Soll-Wert" type="s:string" />
+      </s:complexType>
+      <s:element name="InsertDiplomdatenV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="benutzername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idPerson" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplomart" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ortErteilung" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idLand" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumErteilung" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumAnerkennungCH" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="datumGleichwertigkeit" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplomTyp" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertDiplomdatenV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertDiplomdatenV2Result" type="tns:InsertResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InsertResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:MutationResponse">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="InsertedId" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="DeleteDiplomdaten">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="benutzername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idDiplom" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteDiplomdatenResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
