@@ -9496,7 +9496,47 @@
          </v1:pageLink>\r
       </v1:GetPage>\r
    </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="51b4cb96-53d6-4749-a6ca-37c37007cdad" name="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" id="6d0cd564-db41-4075-9608-1af1e4bf567e" name="SOAP Fault"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schemas.eviware.com/TestService/v1/GetPage"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="fe1189ea-3eb2-4aee-860c-3598c91c7a95" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="testservice-test2" searchProperties="true"><con:settings/><con:testStep type="request" id="2a9f6436-f8b8-452f-8f77-aed7b6cb56f7" name="GetDefaultPageData valid"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>testservice-test2</con:interface><con:operation>GetDefaultPageData</con:operation><con:request name="GetDefaultPageData valid" id="019ceafb-cb9c-4ebf-86dc-45b9faddcd7f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8243/testservice-test2/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.eviware.com/TestService/v1/">\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="51b4cb96-53d6-4749-a6ca-37c37007cdad" name="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" id="6d0cd564-db41-4075-9608-1af1e4bf567e" name="SOAP Fault"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schemas.eviware.com/TestService/v1/GetPage"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="e7c16f39-802d-4246-bada-552d88abb35f" name="GetPage-emptySoapAction"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>testservice-test1</con:interface><con:operation>GetPage</con:operation><con:request name="GetPage-emptySoapAction" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="3a4cb972-6f59-4b3f-a413-5d8989334373"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="SOAPAction" value="" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8243/testservice-test1/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.eviware.com/TestService/v1/">\r
+   <soapenv:Header>\r
+      <v1:SignatureHeader>\r
+         <!--Optional:-->\r
+         <v1:CheckSum>?</v1:CheckSum>\r
+         <!--Optional:-->\r
+         <v1:RemoteSite>?</v1:RemoteSite>\r
+      </v1:SignatureHeader>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <v1:GetPage>\r
+         <v1:pageLink>\r
+            <v1:ID>1</v1:ID>\r
+            <v1:WorkID>1</v1:WorkID>\r
+            <!--Optional:-->\r
+            <v1:RemoteSite>STRING</v1:RemoteSite>\r
+            <v1:LoadRawPageData>true</v1:LoadRawPageData>\r
+         </v1:pageLink>\r
+      </v1:GetPage>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="51b4cb96-53d6-4749-a6ca-37c37007cdad" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schemas.eviware.com/TestService/v1/GetPage"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="29784ff3-40a8-458e-b1cb-35593d6b1112" name="GetPage-noSoapAction"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>testservice-test1</con:interface><con:operation>GetPage</con:operation><con:request name="GetPage-noSoapAction" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="3a4cb972-6f59-4b3f-a413-5d8989334373"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@skip_soap_action">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8243/testservice-test1/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.eviware.com/TestService/v1/">\r
+   <soapenv:Header>\r
+      <v1:SignatureHeader>\r
+         <!--Optional:-->\r
+         <v1:CheckSum>?</v1:CheckSum>\r
+         <!--Optional:-->\r
+         <v1:RemoteSite>?</v1:RemoteSite>\r
+      </v1:SignatureHeader>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <v1:GetPage>\r
+         <v1:pageLink>\r
+            <v1:ID>1</v1:ID>\r
+            <v1:WorkID>1</v1:WorkID>\r
+            <!--Optional:-->\r
+            <v1:RemoteSite>STRING</v1:RemoteSite>\r
+            <v1:LoadRawPageData>true</v1:LoadRawPageData>\r
+         </v1:pageLink>\r
+      </v1:GetPage>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="51b4cb96-53d6-4749-a6ca-37c37007cdad" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action=""/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="fe1189ea-3eb2-4aee-860c-3598c91c7a95" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="testservice-test2" searchProperties="true"><con:settings/><con:testStep type="request" id="2a9f6436-f8b8-452f-8f77-aed7b6cb56f7" name="GetDefaultPageData valid"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>testservice-test2</con:interface><con:operation>GetDefaultPageData</con:operation><con:request name="GetDefaultPageData valid" id="019ceafb-cb9c-4ebf-86dc-45b9faddcd7f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8243/testservice-test2/v1</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.eviware.com/TestService/v1/">\r
    <soapenv:Body>\r
       <v1:GetDefaultPageData>
          <v1:pageLink>

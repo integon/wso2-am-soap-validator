@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -27,6 +29,11 @@ import ch.integon.wso2.am.mediator.wsdl.model.SOAPVersion;
 public class SOAPAnalyzer
 {
 	private static final Log logger = LogFactory.getLog(SOAPAnalyzer.class);
+
+	// Constants for SOAP 1.1
+    private static final String SOAP_NS = "http://schemas.xmlsoap.org/soap/envelope/";
+    private static final String SOAP_ENVELOPE = "Envelope";
+    private static final String SOAP_BODY = "Body";
 
 	/**
 	 * Analyzes a SOAP message in the given Synapse MessageContext. Extracts SOAP
@@ -66,6 +73,20 @@ public class SOAPAnalyzer
 		{
 			logger.warn("SOAP body is empty");
 			throw new SOAPValidationException("soap body empty");
+		}
+
+		// check if payload of SOAP1.1 is double-wrapped 
+		if (soapVersion == SOAPVersion.SOAP_1_1 && SOAP_ENVELOPE.equals(bodyElement.getLocalName()) && SOAP_NS.equals(bodyElement.getNamespace().getNamespaceURI()))
+		{
+			// double wrapped - unwrap it
+			OMElement innerBody = bodyElement.getFirstChildWithName(new QName(SOAP_NS, SOAP_BODY)).getFirstElement();
+			if (innerBody == null)
+			{
+				logger.warn("SOAP (inner)body is empty");
+				throw new SOAPValidationException("soap (inner)body empty");
+			}
+			bodyElement = innerBody;
+			logger.debug("Received SOAP payload was double-wrapped because of no SOAPAction was submitted. Unwrapped payload: " + envelope.toString());
 		}
 
 		// check more elements are found than current payload (skip comment and text

@@ -1,6 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.integon.wso2</groupId>
@@ -13,6 +12,8 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <apache.cxf.version>4.1.4</apache.cxf.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <repositories>
         <repository>
@@ -184,20 +185,20 @@
             <version>${apache.cxf.version}</version>
         </dependency>
         <dependency>
-    		<groupId>jakarta.annotation</groupId>
-    		<artifactId>jakarta.annotation-api</artifactId>
-    		<version>2.1.1</version>
-		</dependency>
-		<dependency>
-    		<groupId>jakarta.xml.bind</groupId>
-    		<artifactId>jakarta.xml.bind-api</artifactId>
-    		<version>4.0.4</version>
-		</dependency>
-		<dependency>
-    		<groupId>jakarta.xml.ws</groupId>
-    		<artifactId>jakarta.xml.ws-api</artifactId>
-    		<version>4.0.2</version>
-		</dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>4.0.2</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.woodstox</groupId>
             <artifactId>woodstox-core</artifactId>
@@ -271,14 +272,11 @@
                                 </relocation>
                             </relocations>
                             <transformers>
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/cxf/bus-extensions.txt</resource>
                                 </transformer>
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
                             </transformers>
                         </configuration>
                     </execution>
@@ -294,17 +292,9 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <unzip
-                                    src="${project.build.directory}/${project.build.finalName}.jar"
-                                    dest="${project.build.directory}/jar-temp" />
-                                <replaceregexp
-                                    file="${project.build.directory}/jar-temp/META-INF/cxf/bus-extensions.txt"
-                                    match="org.apache.cxf"
-                                    replace="ch.integon.shaded.cxf"
-                                    byline="true"
-                                    flags="g" />
-                                <jar
-                                    destfile="${project.build.directory}/${project.build.finalName}.jar">
+                                <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/jar-temp" />
+                                <replaceregexp file="${project.build.directory}/jar-temp/META-INF/cxf/bus-extensions.txt" match="org.apache.cxf" replace="ch.integon.shaded.cxf" byline="true" flags="g" />
+                                <jar destfile="${project.build.directory}/${project.build.finalName}.jar">
                                     <fileset dir="${project.build.directory}/jar-temp" />
                                 </jar>
                             </target>
