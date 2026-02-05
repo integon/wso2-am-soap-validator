@@ -1,8 +1,11 @@
 package ch.integon.wso2.am.mediator.wsdl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -31,9 +34,13 @@ public class SOAPAnalyzer
 	private static final Log logger = LogFactory.getLog(SOAPAnalyzer.class);
 
 	// Constants for SOAP 1.1
-    private static final String SOAP_NS = "http://schemas.xmlsoap.org/soap/envelope/";
-    private static final String SOAP_ENVELOPE = "Envelope";
-    private static final String SOAP_BODY = "Body";
+	private static final String SOAP_NS = "http://schemas.xmlsoap.org/soap/envelope/";
+	private static final String SOAP_ENVELOPE = "Envelope";
+	private static final String SOAP_BODY = "Body";
+	private static final String TRANSPORT_HEADERS_PROPERTY_NAME = "TRANSPORT_HEADERS";
+	private static final String TRANSPORT_HEADERS_CONTENT_TYPE = "content-type";
+    private static final String SOAP11_CONTENT_TYPE = "text/xml";
+    private static final String SOAP12_CONTENT_TYPE = "application/soap+xml";
 
 	/**
 	 * Analyzes a SOAP message in the given Synapse MessageContext. Extracts SOAP
@@ -56,8 +63,26 @@ public class SOAPAnalyzer
 			logger.debug("Message is a SOAP fault, returning fault result");
 			return SOAPAnalysisResult.createSOAPAnalysisResultFault();
 		}
-		
-		// get soap action (message context holds soap action header and action from content-type header)
+
+		// parse transport headers
+		Map<String, Object> transportHeaders = parseHeaders(ctx);
+		if (transportHeaders.size() == 0)
+		{
+			logger.debug("parsing transport headers returned an empty map");
+			throw new SOAPValidationException("unable to parse transport haders");
+		}
+
+		// check content-type throw an exception if non soap
+		String contentType = readContentTypeFromHeaders(transportHeaders);
+		String normalizedContentType = contentType.trim().toLowerCase();
+		if (!(normalizedContentType.startsWith(SOAP11_CONTENT_TYPE)
+				|| normalizedContentType.startsWith(SOAP12_CONTENT_TYPE)))
+		{
+			throw new SOAPValidationException("Invalid content-type for a SOAP request/reponse");
+		}
+
+		// get soap action (message context holds soap action header and action from
+		// content-type header)
 		String soapAction = ctx.getSoapAction();
 
 		// get soap version first to determine required info
@@ -75,8 +100,9 @@ public class SOAPAnalyzer
 			throw new SOAPValidationException("soap body empty");
 		}
 
-		// check if payload of SOAP1.1 is double-wrapped 
-		if (soapVersion == SOAPVersion.SOAP_1_1 && SOAP_ENVELOPE.equals(bodyElement.getLocalName()) && SOAP_NS.equals(bodyElement.getNamespace().getNamespaceURI()))
+		// check if payload of SOAP1.1 is double-wrapped
+		if (soapVersion == SOAPVersion.SOAP_1_1 && SOAP_ENVELOPE.equals(bodyElement.getLocalName())
+				&& SOAP_NS.equals(bodyElement.getNamespace().getNamespaceURI()))
 		{
 			// double wrapped - unwrap it
 			OMElement innerBody = bodyElement.getFirstChildWithName(new QName(SOAP_NS, SOAP_BODY)).getFirstElement();
@@ -86,7 +112,9 @@ public class SOAPAnalyzer
 				throw new SOAPValidationException("soap (inner)body empty");
 			}
 			bodyElement = innerBody;
-			logger.debug("Received SOAP payload was double-wrapped because of no SOAPAction was submitted. Unwrapped payload: " + envelope.toString());
+			logger.debug(
+					"Received SOAP payload was double-wrapped because of no SOAPAction was submitted. Unwrapped payload: "
+							+ envelope.toString());
 		}
 
 		// check more elements are found than current payload (skip comment and text
@@ -173,5 +201,63 @@ public class SOAPAnalyzer
 		}
 
 		return headerElements;
+	}
+
+	/**
+	 * Extracts all HTTP headers from the request
+	 * 
+	 * @param ctx the Synapse MessageContext containing the SOAP message
+	 * @return Map of all headers; empty map if not able to parse
+	 */
+	private Map<String, Object> parseHeaders(MessageContext ctx)
+	{
+		Object headersObj = ((Axis2MessageContext) ctx).getAxis2MessageContext()
+				.getProperty(TRANSPORT_HEADERS_PROPERTY_NAME);
+		if (!(headersObj instanceof Map<?, ?> rawMap))
+		{
+			logger.debug("headers object not a map - unable to parse");
+			return Collections.emptyMap();
+		}
+
+		Map<String, Object> headers = new HashMap<>();
+		for (Map.Entry<?, ?> entry : rawMap.entrySet())
+		{
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if (key instanceof String)
+			{
+				headers.put((String) key, value);
+			} else
+			{
+				logger.debug(String.format("unable to add read key as string: %v", key));
+			}
+		}
+
+		return headers;
+	}
+
+	/**
+	 * Read content-type header from headers map
+	 * 
+	 * @param headers parsed from the HTTP request
+	 * @return String representation of the content-type header
+	 */
+	private String readContentTypeFromHeaders(Map<String, Object> headers)
+	{
+		for (String key : headers.keySet())
+		{
+			if (key.equalsIgnoreCase(TRANSPORT_HEADERS_CONTENT_TYPE))
+			{
+				Object contentTypeObject = headers.get(key);
+				if (contentTypeObject instanceof String)
+				{
+					String contentType = (String) contentTypeObject;
+					logger.debug("content type parsed: " + contentType);
+					return contentType;
+				}
+			}
+		}
+		logger.debug("unable to find content type in headers");
+		return "";
 	}
 }

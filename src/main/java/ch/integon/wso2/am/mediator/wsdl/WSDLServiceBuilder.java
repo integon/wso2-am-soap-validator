@@ -170,7 +170,7 @@ public class WSDLServiceBuilder
 	                        	if(bodyQName.equals(part.getElementQName()))
 	                    		{
 	                        		logger.debug("          matching service and operation found by bodyQName in fault parts! service: " + service.getName() + " operation: " + operation.getName());
-	                    			matchedServiceByBodyName = service;
+	                        		matchedServiceByBodyName = service;
 	                    			matchedOperationByBodyName = operation;
 	                    		}
 	                        }
@@ -199,8 +199,8 @@ public class WSDLServiceBuilder
     		}
     	}
     	
-    	ServiceInfo returnServiceInfo = matchedServiceByAction == null ? matchedServiceByBodyName : matchedServiceByAction;
-    	BindingOperationInfo returnOperationInfo = matchedOperationByAction == null ? matchedOperationByBodyName : matchedOperationByBodyName;
+    	ServiceInfo returnServiceInfo = (matchedServiceByAction == null) ? matchedServiceByBodyName : matchedServiceByAction;
+    	BindingOperationInfo returnOperationInfo = (matchedOperationByAction == null) ? matchedOperationByBodyName : matchedOperationByAction;
     	logger.debug("Returning matched SOAPServiceOperation with service: " + returnServiceInfo + " and operation: " + returnOperationInfo);
     	
     	return new SOAPServiceOperation(returnServiceInfo, returnOperationInfo);
