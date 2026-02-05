@@ -50,7 +50,7 @@ public class SOAPValidator
 		// Initialize Woodstox input factory
 		WstxInputFactory factory = new WstxInputFactory();
 		factory.setProperty(XMLInputFactory.IS_COALESCING, true);
-		// TODO: Configure factory properties if needed. see:
+		// To configure factory properties if needed. see:
 		// https://github.com/codehaus/woodstox/blob/master/wstx1/src/java/com/ctc/wstx/stax/WstxInputProperties.java
 
 		// Get SOAP body XML as string

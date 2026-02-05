@@ -28,6 +28,12 @@ import ch.integon.wso2.am.mediator.wsdl.model.SOAPDirection;
 public class SOAPValidationFaultHandler
 {
 
+	private static final String SOAP11_CONTENT_TYPE = "text/xml";
+	private static final String SOAP12_CONTENT_TYPE = "application/soap+xml";
+	private static final String XML_CONTENT_TYPE = "application/xml";
+	private static final String MESSAGE_TYPE = "messageType";
+	private static final String CONTENT_TYPE = "ContentType";
+
 	private static final Log logger = LogFactory.getLog(SOAPValidationFaultHandler.class);
 
 	/**
@@ -146,18 +152,35 @@ public class SOAPValidationFaultHandler
 	{
 		logger.debug("Sending SOAP fault response back to the client");
 
-		Axis2MessageContext axis2Ctx = (Axis2MessageContext) messageContext;
-		org.apache.axis2.context.MessageContext axis2MsgCtx = axis2Ctx.getAxis2MessageContext();
+		// set content-type if not already set
+		org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
 
-		try
+		if (!XML_CONTENT_TYPE.equals(a2mc.getProperty(MESSAGE_TYPE))
+				&& !SOAP11_CONTENT_TYPE.equals(a2mc.getProperty(MESSAGE_TYPE))
+				&& !SOAP12_CONTENT_TYPE.equals(a2mc.getProperty(MESSAGE_TYPE)))
 		{
-			axis2MsgCtx.setEnvelope(envelope);
-		} catch (AxisFault e)
-		{
-			throw new RuntimeException("Failed to set SOAP fault envelope", e);
+			logger.debug("set content type to: " + XML_CONTENT_TYPE);
+			a2mc.setProperty(MESSAGE_TYPE, XML_CONTENT_TYPE);
+			a2mc.setProperty(CONTENT_TYPE, XML_CONTENT_TYPE);
 		}
+		
+		try {
+	        a2mc.setEnvelope(envelope);
+	    } catch (AxisFault e) {
+	        throw new RuntimeException("Failed to set SOAP fault envelope", e);
+	    }
 
-		axis2Ctx.setTo(null);
-		Axis2Sender.sendBack(messageContext);
+	    // Stop forwarding
+	    a2mc.setTo(null);
+
+	    // Mark as response
+	    messageContext.setProperty("RESPONSE", "true");
+	    messageContext.setProperty("NO_ENTITY_BODY", false);
+
+	    // Set transport-level HTTP status
+	    a2mc.setProperty("HTTP_SC", 500);
+
+	    // Send immediately
+	    Axis2Sender.sendBack(messageContext);
 	}
 }

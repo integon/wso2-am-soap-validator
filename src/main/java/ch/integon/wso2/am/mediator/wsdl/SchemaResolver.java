@@ -118,9 +118,7 @@ public class SchemaResolver
 			try
 			{
 				SchemaCompiler schemaCompiler = new SchemaCompiler();
-				XMLValidationSchema schema = schemaCompiler.compileSchema(serviceOperation);
-
-				return schema;
+				return schemaCompiler.compileSchema(serviceOperation);
 			} catch (Exception e)
 			{
 				logger.error("Failed to resolve schema for API: " + apiUUID, e);

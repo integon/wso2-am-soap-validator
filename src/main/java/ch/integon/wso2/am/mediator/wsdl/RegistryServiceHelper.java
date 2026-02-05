@@ -1,6 +1,8 @@
 package ch.integon.wso2.am.mediator.wsdl;
 
+import java.io.IOException;
 import java.net.URI;
+import java.io.File;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +13,8 @@ import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.registry.core.session.UserRegistry;
+
+import ch.integon.wso2.am.mediator.wsdl.model.SOAPValidationException;
 
 /**
  * Helper class for accessing WSO2 governance registry. Provides methods to
@@ -68,32 +72,49 @@ public class RegistryServiceHelper
 	 * @throws Exception if the API path, revision, or WSDL is missing, or
 	 *                   extraction fails
 	 */
-	public URI[] getLatestWSDLUri(String apiUUID, WSDLExtractor extractor) throws Exception
+	public URI[] getLatestWSDLUri(String apiUUID, WSDLExtractor extractor) throws SOAPValidationException
 	{
 		String apiBasePath = "/apimgt/applicationdata/apis/" + apiUUID;
 		logger.debug("Checking if API base path exists: " + apiBasePath);
-		if (!governanceRegistry.resourceExists(apiBasePath))
+		boolean apiBasePathExists;
+		try
+		{
+			apiBasePathExists = governanceRegistry.resourceExists(apiBasePath);
+		}
+		catch(RegistryException e)
+		{
+			throw new SOAPValidationException("unable to check registry path: " + apiBasePath);
+		}
+		if (!apiBasePathExists)
 		{
 			logger.error("API base path does not exist: " + apiBasePath);
-			throw new RegistryException("API base path does not exist: " + apiBasePath);
+			throw new SOAPValidationException("API base path does not exist: " + apiBasePath);
 		}
 
 		// Retrieve revision collection and determine latest revision
-		Collection apiRevisionCollection = (Collection) governanceRegistry.get(apiBasePath);
-		int latestRevision = apiRevisionCollection.getChildCount();
-		logger.debug("Latest revision number for API " + apiUUID + ": " + latestRevision);
-
-		String apiRevisionPath = apiBasePath + "/" + latestRevision;
-		if (!governanceRegistry.resourceExists(apiRevisionPath))
+		String[] items;
+		try
 		{
-			logger.error("Revision path does not exist: " + apiRevisionPath);
-			throw new RegistryException("Revision path does not exist: " + apiRevisionPath);
-		}
-		logger.debug("Revision path exists: " + apiRevisionPath);
+			Collection apiRevisionCollection = (Collection) governanceRegistry.get(apiBasePath);
+			int latestRevision = apiRevisionCollection.getChildCount();
+			logger.debug("Latest revision number for API " + apiUUID + ": " + latestRevision);
 
-		Collection revisionCollection = (Collection) governanceRegistry.get(apiRevisionPath);
-		String[] items = revisionCollection.getChildren();
-		logger.debug("Found registry items in revision: " + String.join(", ", items));
+			String apiRevisionPath = apiBasePath + File.separator + latestRevision;
+			if (!governanceRegistry.resourceExists(apiRevisionPath))
+			{
+				logger.error("Revision path does not exist: " + apiRevisionPath);
+				throw new RegistryException("Revision path does not exist: " + apiRevisionPath);
+			}
+			logger.debug("Revision path exists: " + apiRevisionPath);
+
+			Collection revisionCollection = (Collection) governanceRegistry.get(apiRevisionPath);
+			items = revisionCollection.getChildren();
+			logger.debug("Found registry items in revision: " + String.join(", ", items));
+		}
+		catch(RegistryException e)
+		{
+			throw new SOAPValidationException("unable to get registry resource", e);
+		}
 
 		// Identify WSDL file or archives folder
 		String wsdlFile = null;
@@ -111,18 +132,25 @@ public class RegistryServiceHelper
 			}
 		}
 
-		if (wsdlFile != null)
+		try
 		{
-			logger.debug("Delegating extraction of single WSDL to WSDLExtractor");
-			return extractor.getSingleWSDLFromRegistry(governanceRegistry, wsdlFile);
-		} else if (archivesFolder != null)
+			if (wsdlFile != null)
+			{
+				logger.debug("Delegating extraction of single WSDL to WSDLExtractor");
+				return extractor.getSingleWSDLFromRegistry(governanceRegistry, wsdlFile);
+			} else if (archivesFolder != null)
+			{
+				logger.debug("Delegating extraction of WSDL from archive to WSDLExtractor");
+				return extractor.getArchiveWSDLFromRegistry(governanceRegistry, archivesFolder);
+			} else
+			{
+				logger.error("Neither WSDL file nor archive found in registry for API: " + apiUUID);
+				throw new SOAPValidationException("Neither WSDL file nor archive found in registry for API: " + apiUUID);
+			}
+		}
+		catch (RegistryException | IOException e)
 		{
-			logger.debug("Delegating extraction of WSDL from archive to WSDLExtractor");
-			return extractor.getArchiveWSDLFromRegistry(governanceRegistry, archivesFolder);
-		} else
-		{
-			logger.error("Neither WSDL file nor archive found in registry for API: " + apiUUID);
-			throw new RegistryException("Neither WSDL file nor archive found in registry for API: " + apiUUID);
+			throw new SOAPValidationException("unable to extract wsdl from registry", e);
 		}
 	}
 
@@ -140,13 +168,13 @@ public class RegistryServiceHelper
 		Resource resource = governanceRegistry.get(resourcePath);
 		Object content = resource.getContent();
 
-		if (content instanceof byte[])
+		if (content instanceof byte[] bArray)
 		{
 			logger.debug("Registry resource content type: byte[], size=" + ((byte[]) content).length);
-			return (byte[]) content;
-		} else if (content instanceof String)
+			return bArray;
+		} else if (content instanceof String sContent)
 		{
-			byte[] data = ((String) content).getBytes();
+			byte[] data = sContent.getBytes();
 			logger.debug("Registry resource content type: String, size=" + data.length);
 			return data;
 		} else

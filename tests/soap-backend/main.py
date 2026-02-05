@@ -20,6 +20,9 @@ def testservice():
 
     if variant_header == "INVALID_CONTENT_TYPE":
         return Response("{\"hello\":\"world\"}", mimetype="application/json; charset=utf-8")
+    
+    if variant_header == "INVALID_RESPONSE":
+        return Response("<foo>bar</foo>", mimetype="text/xml; charset=utf-8")
 
 
     return Response(Path("./responses/testservice.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")

@@ -10,16 +10,18 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.Collection;
 import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.session.UserRegistry;
+
+import ch.integon.wso2.am.mediator.wsdl.model.SOAPValidationException;
 
 /**
  * Extracts WSDL files from the WSO2 registry, either as single files or
@@ -38,7 +40,7 @@ public class WSDLExtractor
 	 * @return URI to the extracted WSDL file
 	 * @throws Exception if extraction fails
 	 */
-	public URI[] getSingleWSDLFromRegistry(UserRegistry registry, String wsdlPath) throws Exception
+	public URI[] getSingleWSDLFromRegistry(UserRegistry registry, String wsdlPath) throws SOAPValidationException, IOException, RegistryException
 	{
 		logger.debug("Extracting single WSDL from registry path: " + wsdlPath);
 
@@ -50,10 +52,10 @@ public class WSDLExtractor
 		Resource resource = registry.get(wsdlPath);
 		if(resource == null)
 		{
-			throw new Exception("wsdl path returned null");
+			throw new SOAPValidationException("wsdl path returned null");
 		}
 		Object content = resource.getContent();
-		byte[] wsdlData = content instanceof byte[] ? (byte[]) content : ((String) content).getBytes();
+		byte[] wsdlData = content instanceof byte[] bArray ? bArray : ((String) content).getBytes();
 		logger.debug("Downloaded WSDL content, size: " + wsdlData.length);
 
 		// Write WSDL to temporary file
@@ -72,7 +74,7 @@ public class WSDLExtractor
 	 * @return URI to the extracted WSDL file
 	 * @throws Exception if extraction fails or multiple/no WSDL files are found
 	 */
-	public URI[] getArchiveWSDLFromRegistry(UserRegistry registry, String archivePath) throws Exception
+	public URI[] getArchiveWSDLFromRegistry(UserRegistry registry, String archivePath) throws SOAPValidationException, RegistryException, IOException
 	{
 		logger.debug("Extracting WSDL from archive at registry path: " + archivePath);
 
@@ -92,7 +94,7 @@ public class WSDLExtractor
 		if (zipFilePath == null)
 		{
 			logger.error("No ZIP archive found in path: " + archivePath);
-			throw new Exception("No ZIP archive found in path: " + archivePath);
+			throw new SOAPValidationException("No ZIP archive found in path: " + archivePath);
 		}
 
 		// Create temporary folder for extraction
@@ -101,7 +103,7 @@ public class WSDLExtractor
 
 		// Download archive content
 		Object content = registry.get(zipFilePath).getContent();
-		byte[] archiveData = content instanceof byte[] ? (byte[]) content : ((String) content).getBytes();
+		byte[] archiveData = content instanceof byte[] bArray ? bArray : ((String) content).getBytes();
 		logger.debug("Downloaded archive content, size: " + archiveData.length);
 
 		// Extract ZIP contents
@@ -113,11 +115,11 @@ public class WSDLExtractor
 		if (wsdlFiles.isEmpty())
 		{
 			logger.error("No WSDL files found in archive: " + zipFilePath);
-			throw new Exception("No WSDL files found in archive");
+			throw new SOAPValidationException("No WSDL files found in archive");
 		}
 		
 		// Create list of the found WSDL files
-		List<URI> wsdlURIs = new ArrayList<URI>();
+		List<URI> wsdlURIs = new ArrayList<>();
 		for(Path p : wsdlFiles)
 		{
 			wsdlURIs.add(p.toUri());
@@ -215,7 +217,7 @@ public class WSDLExtractor
 		{
 			List<Path> wsdlFiles = paths.filter(Files::isRegularFile)
 					.filter(p -> p.getFileName().toString().toLowerCase().endsWith(".wsdl"))
-					.collect(Collectors.toList());
+					.toList();
 			logger.debug("Found WSDL files in folder " + folder + ": " + wsdlFiles);
 			return wsdlFiles;
 		}
