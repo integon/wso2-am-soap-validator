@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Auto generated server sample response. -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:ns0="http://schemas.eviware.com/TestService/v1/">
+    <SOAP-ENV:Header>
+        <ns0:SignatureHeader>
+            <ns0:CheckSum>STRING</ns0:CheckSum>
+            <ns0:RemoteSite>STRING</ns0:RemoteSite>
+        </ns0:SignatureHeader>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <ns0:GetPageResponse>
+            <foo></foo>
+        </ns0:GetPageResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

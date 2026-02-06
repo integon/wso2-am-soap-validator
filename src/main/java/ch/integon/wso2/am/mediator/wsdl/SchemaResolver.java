@@ -99,7 +99,7 @@ public class SchemaResolver
 					result.getSoapBodyElement().getQName());
 		} catch (Exception e)
 		{
-			throw new SOAPValidationException("error while finding corresponding service and operation", e);
+			throw new SOAPValidationException("An error occurred while attempting to resolve the SOAP service or operation: " + e.getMessage(), e);
 		}
 
 		String schemaCacheKey = buildSchemaCacheKey(apiUUID, serviceOperation);

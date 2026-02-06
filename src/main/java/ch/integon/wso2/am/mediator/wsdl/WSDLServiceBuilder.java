@@ -181,8 +181,9 @@ public class WSDLServiceBuilder
     	
     	if (matchedServiceByAction == null && matchedServiceByBodyName == null)
     	{
-    		logger.debug("No matching service found by SOAP action or body QName");
-    		return null;
+    		String noMatchError = "No matching service found by SOAP action or body QName";
+    		logger.error(noMatchError);
+    		throw new IllegalStateException(noMatchError);
     	}
     	
     	if (matchedServiceByAction != null && matchedServiceByBodyName != null)

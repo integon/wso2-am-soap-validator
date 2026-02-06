@@ -21,8 +21,17 @@ def testservice():
     if variant_header == "INVALID_CONTENT_TYPE":
         return Response("{\"hello\":\"world\"}", mimetype="application/json; charset=utf-8")
     
-    if variant_header == "INVALID_RESPONSE":
+    if variant_header == "INVALID_RESPONSE_NO_SOAP":
         return Response("<foo>bar</foo>", mimetype="text/xml; charset=utf-8")
+    
+
+    if variant_header == "INVALID_RESPONSE_INVALID_SOAP_BODY":
+        return Response(Path("./responses/testservice_invalid_response_body.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
+    
+    if variant_header == "INVALID_RESPONSE_INVALID_SOAP":
+        print("FIRING!!", file=sys.stderr)
+        return Response(Path("./responses/testservice_invalid_response.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
+    
 
 
     return Response(Path("./responses/testservice.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
