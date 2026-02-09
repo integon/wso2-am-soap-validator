@@ -13,3 +13,5 @@ services:
     container_name: backend
     build:
       context: soap-backend
+    ports:
+      - "8080:8080"

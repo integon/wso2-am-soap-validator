@@ -18,7 +18,7 @@ It is designed to integrate seamlessly with WSO2 API Manager and can be used in 
 ## Features
 
 - **Full SOAP 1.1 and 1.2 support** – detects SOAP version automatically.
-- **Schema validation** – validates SOAP messages against WSDL/XSD schemas.
+- **Schema validation** – validates SOAP messages (and headers) against WSDL/XSD schemas.
 - **SOAP fault handling** – generates proper SOAP 1.1/1.2 faults on validation errors.
 - **Support for complex WSDLs** – handles WSDLs with imports and ZIP archives.
 - **Caching** – schemas and service metadata are cached for performance.
@@ -39,10 +39,13 @@ It is designed to integrate seamlessly with WSO2 API Manager and can be used in 
 
 To use the mediator in the WSO2 API Manager, create a .j2 file with the following (minimum) content:
 ```xml
-<class name="ch.integon.wso2.am.mediator.wsdl.SOAPValidationMediator"/>
+<class name="ch.integon.wso2.am.mediator.wsdl.SOAPValidationMediator">
+  <property name="validateHeaders" value="{{validate}}" type="BOOLEAN"/>
+</class>
 ```
-Then [create a policy](https://apim.docs.wso2.com/en/latest/manage-apis/design/api-policies/create-policy/) (operational- or api-level) for SOAP api's. The mediator can handle `Request`, `Response` and `Fault` application flows
+> **_NOTE:_**  Make sure to use the policy variable **"validate"** to trigger the head validation capability! "value" in the j2 file must correspond to policy attributes "Name" in the WebUI!
 
+Then [create a policy](https://apim.docs.wso2.com/en/latest/manage-apis/design/api-policies/create-policy/) (operational- or api-level) for SOAP api's. The mediator can handle `Request`, `Response` and `Fault` application flows
 
 ## Usage
 

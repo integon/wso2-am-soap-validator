@@ -27,6 +27,8 @@ import ch.integon.wso2.am.mediator.wsdl.model.SOAPValidationException;
  * Author: Integon GmbH
  */
 public class SOAPValidationMediator extends AbstractMediator {
+	
+	private boolean validateHeaders;
 
     private static final Log logger = LogFactory.getLog(SOAPValidationMediator.class);
 
@@ -89,7 +91,7 @@ public class SOAPValidationMediator extends AbstractMediator {
         List<XMLValidationProblem> problems = null;
         try {
             logger.debug("Starting payload validation");
-            problems = soapValidator.validate(schema, result);
+            problems = soapValidator.validate(schema, result, validateHeaders);
             logger.debug("Payload validation completed");
         } catch (XMLStreamException e) {
             logger.error("Error during validation", e);
@@ -106,6 +108,26 @@ public class SOAPValidationMediator extends AbstractMediator {
 
         logger.debug("Payload is valid for API UUID: " + apiUUID);
         return true;
+    }
+    
+    /**
+     * Mediator policy parameter getter / setter
+     * 
+     * @return
+     */
+    public boolean isValidateHeaders()
+    {
+    	return validateHeaders;
+    }
+    
+    /**
+     * Mediator policy parameter getter / setter
+     * 
+     * @return
+     */
+    public void setValidateHeaders(boolean validateHeaders)
+    {
+    	this.validateHeaders = validateHeaders;
     }
 
 }

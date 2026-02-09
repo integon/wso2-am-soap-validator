@@ -44,7 +44,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
 echo "Update API RC: $UPDATE_RC"
@@ -68,7 +68,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -93,7 +93,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -118,7 +118,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -143,7 +143,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -168,7 +168,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -193,7 +193,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -218,7 +218,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -243,7 +243,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -268,7 +268,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -293,7 +293,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")
@@ -318,7 +318,7 @@ resp=$(curl -k --fail -H "Authorization: Bearer $TOKEN" \
 
 api_id=$(echo "$resp" | jq -r ".id")
 apiDefinition=$(curl -k --fail -H "Authorization: Bearer $TOKEN" "${PUBLISHER_API_ENDPOINT}/$api_id")
-updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP"}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP"}]')
+updatePayload=$(echo $apiDefinition | jq '.operations[0].operationPolicies.request += [{"policyName":"validateSOAP","parameters":{"validate":true}}] | .operations[0].operationPolicies.response += [{"policyName":"validateSOAP","parameters":{"validate":true}}]')
 updatePayload=$(echo $updatePayload | jq '.operations[0].authType="None"')
 updatePayload=$(echo $updatePayload | jq '.wsdlInfo.type="ZIP"')
 UPDATE_RC=$(curl -X PUT -k -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "$updatePayload" "${PUBLISHER_API_ENDPOINT}/$api_id")

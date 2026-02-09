@@ -8,6 +8,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.stax2.XMLStreamReader2;
@@ -42,25 +43,51 @@ public class SOAPValidator
 	 * @return a list of XMLValidationProblem, empty if valid
 	 * @throws XMLStreamException if an XML parsing error occurs
 	 */
-	public List<XMLValidationProblem> validate(XMLValidationSchema schema, SOAPAnalysisResult result)
+	public List<XMLValidationProblem> validate(XMLValidationSchema schema, SOAPAnalysisResult result, Boolean validateHeaders)
 			throws XMLStreamException
 	{
-		logger.debug("Starting SOAP payload validation");
+		logger.debug("Starting SOAP message validation against schema");
 
+		// read & validate headers if enabled
+		if(validateHeaders)
+		{
+			logger.debug("SOAP-Headers validation enabled. Proceeding with validation of headers...");
+			for(OMElement header: result.getHeaderElements())
+			{
+				String sXMLHeader = header.toString();
+				logger.debug("SOAP header for validation extracted: " + ((sXMLHeader.length() > 200) ? sXMLHeader.substring(0, 200) : sXMLHeader));
+				List<XMLValidationProblem> validationProblems = validate(sXMLHeader, schema);
+				if(validationProblems.size() > 0)
+				{
+					// do not proceed if validator found a violation
+					logger.debug("validating header: " + header.getLocalName() + " returned error(s)");
+					return validationProblems;
+				}
+			}
+			logger.debug("SOAP Header(s) validation completed. Validation errors: 0");
+		}
+		
+		// Get SOAP body XML as string
+		String sXMLPayload = result.getSoapBodyElement().toString();
+		logger.debug("SOAP payload extracted: "
+				+ (sXMLPayload.length() > 200 ? sXMLPayload.substring(0, 200) + "..." : sXMLPayload));
+		List<XMLValidationProblem> validationProblems = validate(sXMLPayload, schema);
+		logger.debug("SOAP Body validation completed. Validation errors: " + validationProblems.size());
+		
+		return validationProblems;
+	}
+	
+	private List<XMLValidationProblem> validate(String inputXMLAsString, XMLValidationSchema schema) throws XMLStreamException
+	{
 		// Initialize Woodstox input factory
-		WstxInputFactory factory = new WstxInputFactory();
-		factory.setProperty(XMLInputFactory.IS_COALESCING, true);
 		// To configure factory properties if needed. see:
 		// https://github.com/codehaus/woodstox/blob/master/wstx1/src/java/com/ctc/wstx/stax/WstxInputProperties.java
-
-		// Get SOAP body XML as string
-		String xmlPayload = result.getSoapBodyElement().toString();
-		logger.debug("SOAP payload extracted: "
-				+ (xmlPayload.length() > 200 ? xmlPayload.substring(0, 200) + "..." : xmlPayload));
-
+		WstxInputFactory factory = new WstxInputFactory();
+		factory.setProperty(XMLInputFactory.IS_COALESCING, true);
+		
 		// Create XMLStreamReader2 from payload
-		XMLStreamReader2 reader = (XMLStreamReader2) factory.createXMLStreamReader(new StringReader(xmlPayload));
-
+		XMLStreamReader2 reader = (XMLStreamReader2) factory.createXMLStreamReader(new StringReader(inputXMLAsString));
+		
 		// Apply schema validation
 		reader.validateAgainst(schema);
 		
@@ -94,8 +121,7 @@ public class SOAPValidator
 		{
 			reader.next();
 		}
-
-		logger.debug("SOAP validation completed. Number of problems found: " + validationProblems.size());
+		
 		return validationProblems;
 	}
 }

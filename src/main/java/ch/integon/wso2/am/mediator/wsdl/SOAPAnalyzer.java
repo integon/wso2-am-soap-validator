@@ -133,23 +133,16 @@ public class SOAPAnalyzer
 
 		logger.debug("SOAP body element found: " + bodyElement.getQName());
 
-		// no further analyzing needed for outbound messages
-		if (soapDirection == SOAPDirection.OUTBOUND)
-		{
-			logger.debug("Outbound message, returning result with body only");
-			return new SOAPAnalysisResult(soapDirection, null, soapVersion, bodyElement, null);
-		}
-
 		// extract headers
 		List<OMElement> headerElements = getHeaderElements(ctx);
 		logger.debug("Number of SOAP header elements found: " + headerElements.size());
 		for (OMElement header : headerElements)
 		{
-			logger.debug("Header element: " + header.getQName());
+			logger.debug("SOAP header element found: " + header.getQName());
 		}
 
-		// return result for inbound message
-		logger.debug("Returning SOAPAnalysisResult for inbound message");
+		// return result to the mediator for further processing
+		logger.debug("Returning SOAPAnalysisResult to mediator");
 		return new SOAPAnalysisResult(soapDirection, soapAction, soapVersion, bodyElement, headerElements);
 	}
 

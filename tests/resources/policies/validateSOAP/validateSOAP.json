@@ -15,6 +15,16 @@
     ],
     "supportedApiTypes": [
       "SOAP"
+    ],
+    "policyAttributes": [
+       {
+         "name": "validate",
+         "displayName": "Validate SOAP Headers",
+         "description": "Include SOAP Headers in validation process",
+         "type": "Boolean",
+         "allowedValues": [],
+         "required": false
+       }
     ]
   }
 }

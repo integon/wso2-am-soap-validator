@@ -29,8 +29,10 @@ def testservice():
         return Response(Path("./responses/testservice_invalid_response_body.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
     
     if variant_header == "INVALID_RESPONSE_INVALID_SOAP":
-        print("FIRING!!", file=sys.stderr)
         return Response(Path("./responses/testservice_invalid_response.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
+    
+    if variant_header == "INVALID_RESPONSE_INVALID_SOAP_HEADER":
+        return Response(Path("./responses/testservice_invalid_response_soap_headers.xml").read_text(encoding="utf-8"), mimetype="text/xml; charset=utf-8")
     
 
 
