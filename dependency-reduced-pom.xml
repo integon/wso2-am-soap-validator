@@ -45,6 +45,9 @@
                 </relocation>
                 <relocation>
                   <pattern>net.java.dev.msv</pattern>
+                  <shadedPattern>ch.integon.shaded.msv</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>com.sun</pattern>
                   <shadedPattern>ch.integon.shaded.msv</shadedPattern>
                 </relocation>

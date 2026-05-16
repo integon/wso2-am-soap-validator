@@ -39,9 +39,8 @@ It is designed to integrate seamlessly with WSO2 API Manager and can be used in 
 
 To use the mediator in the WSO2 API Manager, create a .j2 file with the following (minimum) content:
 ```xml
-<class name="ch.integon.wso2.am.mediator.wsdl.SOAPValidationMediator">
-  <property name="validateHeaders" value="{{validate}}" type="BOOLEAN"/>
-</class>
+<property name="validateHeaders" value="{{validate}}" scope="default" type="BOOLEAN"/>
+<class name="ch.integon.wso2.am.mediator.wsdl.SOAPValidationMediator"/>
 ```
 > **_NOTE:_**  Make sure to use the policy variable **"validate"** to trigger the head validation capability! "value" in the j2 file must correspond to policy attributes "Name" in the WebUI!
 

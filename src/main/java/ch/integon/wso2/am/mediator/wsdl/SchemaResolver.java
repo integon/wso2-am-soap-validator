@@ -44,7 +44,7 @@ public class SchemaResolver
 	 *                element QName used to match the correct service operation.
 	 * @return The compiled {@link XMLValidationSchema} ready for validating SOAP
 	 *         messages.
-	 * @throws SOAPValidationException 
+	 * @throws SOAPValidationException
 	 */
 	public XMLValidationSchema resolve(String apiUUID, SOAPAnalysisResult result) throws SOAPValidationException
 	{
@@ -53,42 +53,14 @@ public class SchemaResolver
 
 		WSDLServiceBuilder serviceBuilder = new WSDLServiceBuilder();
 
-		List<ServiceInfo> services;
-		if (apiServices.containsKey(apiUUID))
+		List<ServiceInfo> services = apiServices.get(apiUUID);
+		if (services == null)
 		{
-			logger.debug("Cached services found for: " + apiUUID);
-			services = apiServices.get(apiUUID);
+			logger.debug("No cached services found for: " + apiUUID + " - Start loading files from the registry");
+			services = loadServices(apiUUID);
 		} else
 		{
-			services = apiServices.computeIfAbsent(apiUUID, k ->
-			{
-				try
-				{
-					logger.debug(
-							"No cached services found for: " + apiUUID + " - Start loading files from the registry");
-
-					RegistryServiceHelper registryHelper = new RegistryServiceHelper();
-					logger.debug("RegistryServiceHelper initialized");
-
-					WSDLExtractor wsdlExtractor = new WSDLExtractor();
-					logger.debug("WSDLExtractor initialized");
-
-					URI[] wsdlURIs = registryHelper.getLatestWSDLUri(apiUUID, wsdlExtractor);
-					logger.debug("Obtained WSDL URIs: " + wsdlURIs);
-
-					return serviceBuilder.buildServices(wsdlURIs);
-				} catch (Exception e)
-				{
-					logger.error("unable to build services from wsdl", e);
-				}
-				return null;
-			});
-
-		}
-		if (services == null || services.size() == 0)
-		{
-			logger.error("no service found");
-			return null;
+			logger.debug("Cached services found for: " + apiUUID);
 		}
 
 		// build cache key for schema cache
@@ -99,7 +71,9 @@ public class SchemaResolver
 					result.getSoapBodyElement().getQName());
 		} catch (Exception e)
 		{
-			throw new SOAPValidationException("An error occurred while attempting to resolve the SOAP service or operation: " + e.getMessage(), e);
+			throw new SOAPValidationException(
+					"An error occurred while attempting to resolve the SOAP service or operation: " + e.getMessage(),
+					e);
 		}
 
 		String schemaCacheKey = buildSchemaCacheKey(apiUUID, serviceOperation);
@@ -125,7 +99,7 @@ public class SchemaResolver
 				return null;
 			}
 		});
-		if(validationSchema == null)
+		if (validationSchema == null)
 		{
 			throw new SOAPValidationException("error during schema compilation");
 		}
@@ -144,5 +118,46 @@ public class SchemaResolver
 		return apiUUID + ":" + serviceOperation.getService().getName().toString() + ":"
 				+ serviceOperation.getOperation().getName().toString();
 
+	}
+
+	/**
+	 * Loads services corresponding to the API UUID
+	 * 
+	 * @param apiUUID UUID of the API
+	 * @return list of ServiceInfo's of the API
+	 * @throws SOAPValidationException if either no WSDL is found or unable to build Service objects from it
+	 */
+	private List<ServiceInfo> loadServices(String apiUUID) throws SOAPValidationException
+	{
+		try
+		{
+			RegistryServiceHelper helper = new RegistryServiceHelper();
+			logger.debug("RegistryServiceHelper initialized");
+			
+			WSDLExtractor extractor = new WSDLExtractor();
+			logger.debug("WSDLExtractor initialized");
+			
+			URI[] wsdlURIs = helper.getLatestWSDLUri(apiUUID, extractor);
+			logger.debug("Obtained WSDL URIs: " + wsdlURIs);
+			
+			WSDLServiceBuilder builder = new WSDLServiceBuilder();
+			List<ServiceInfo> services = builder.buildServices(wsdlURIs);
+			
+			if (services == null || services.isEmpty())
+			{
+				throw new SOAPValidationException("No WSDL service found for API: " + apiUUID);
+			}
+			
+			return services;
+			
+		}
+		catch (SOAPValidationException e)
+		{
+			throw e;
+		}
+		catch (Exception e)
+		{
+			throw new SOAPValidationException("Unable to build services from WSDL: " + apiUUID, e);
+		}
 	}
 }
