@@ -53,6 +53,9 @@ public class SOAPValidationMediator extends AbstractMediator {
      */
     @Override
     public boolean mediate(MessageContext messageContext) {
+    	
+    	// Get validateHeaders from message context per call
+    	boolean validateHeaders = resolveValidateHeaders(messageContext);
 
         // Get the API UUID from message context
         Object apiUUIDObject = messageContext.getProperty("API_UUID");
@@ -111,23 +114,30 @@ public class SOAPValidationMediator extends AbstractMediator {
     }
     
     /**
-     * Mediator policy parameter getter / setter
+     * read policy param "validateHeaders" from message ctx
      * 
-     * @return
+     * @param messageContext Synapse message context
+     * @return boolean from context param
      */
-    public boolean isValidateHeaders()
-    {
-    	return validateHeaders;
-    }
-    
-    /**
-     * Mediator policy parameter getter / setter
-     * 
-     * @return
-     */
-    public void setValidateHeaders(boolean validateHeaders)
-    {
-    	this.validateHeaders = validateHeaders;
+    private boolean resolveValidateHeaders(MessageContext messageContext) {
+    	logger.debug("Resolving \"validateHeaders\" field from message context");
+	    Object value = messageContext.getProperty("validateHeaders");
+	    
+	    if (value instanceof Boolean) {
+	    	boolean ret = (Boolean) value;
+	    	logger.debug("Resolved \"validateHeaders\": " + ret);
+	    	return ret;
+	    }
+	    
+	    if (value instanceof String) {
+	    	boolean ret = Boolean.parseBoolean((String) value);
+	    	logger.debug("Resolved \"validateHeaders\": " + ret);
+	    	return ret;
+	    }
+	 
+	    // return default false
+	    logger.debug("Resolving \"validateHeaders\" field showed that the value is neither String nor Boolean. Setting default to: " + false);
+	    return false;
     }
 
 }

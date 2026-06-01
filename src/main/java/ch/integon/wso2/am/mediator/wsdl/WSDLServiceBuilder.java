@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusException;
+import org.apache.cxf.BusFactory;
 import org.apache.cxf.binding.soap.model.SoapOperationInfo;
 import org.apache.cxf.service.model.BindingFaultInfo;
 import org.apache.cxf.service.model.BindingInfo;
@@ -34,6 +35,19 @@ import ch.integon.wso2.am.mediator.wsdl.model.SOAPServiceOperation;
 public class WSDLServiceBuilder
 {
 	private static final Log logger = LogFactory.getLog(WSDLServiceBuilder.class);
+	
+	private static final Bus bus = BusFactory.newInstance().createBus();
+	
+	static {
+		WSDLManager wsdlManager = bus.getExtension(WSDLManager.class);
+		if (wsdlManager == null) {
+			try {
+				bus.setExtension(new WSDLManagerImpl(), WSDLManager.class);
+			} catch (BusException e) {
+				throw new ExceptionInInitializerError(e);
+			}
+		}
+	}
 
 	/**
 	 * Builds a list of ServiceInfo objects from the given WSDL URIs.
@@ -44,7 +58,6 @@ public class WSDLServiceBuilder
 	public List<ServiceInfo> buildServices(URI[] wsdlURIs)
 	{
 		logger.debug("Initializing CXF bus and WSDL manager");
-		Bus bus = org.apache.cxf.BusFactory.newInstance().createBus();
 		WSDLManager wsdlManager = bus.getExtension(WSDLManager.class);
 		if (wsdlManager == null)
 		{
@@ -119,7 +132,9 @@ public class WSDLServiceBuilder
                 		logger.debug("       checking by soapAction: " + soapAction);
                 		
 	                	SoapOperationInfo soapOperation = operation.getExtensor(SoapOperationInfo.class);
-	                	logger.debug("        soapOperation action (maybe empty): " + soapOperation.getAction());
+	                	if (soapOperation != null) {
+	                		logger.debug("        soapOperation action (maybe empty): " + soapOperation.getAction());
+	                	}
 	                	if (soapOperation != null && soapAction.equals(soapOperation.getAction()))
 						{
 	                		logger.debug("        matching service and operation found by (soap) action! service: " + service.getName() + " operation: " + operation.getName());

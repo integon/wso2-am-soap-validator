@@ -2,7 +2,6 @@ package ch.integon.wso2.am.mediator.wsdl;
 
 import java.io.IOException;
 import java.net.URI;
-import java.io.File;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +24,9 @@ public class RegistryServiceHelper
 {
 
 	private static final Log logger = LogFactory.getLog(RegistryServiceHelper.class);
+	
+	/** Always use "/" as separator for the registry path */
+	private static final String registryPathSeparator = "/";
 
 	/** The governance registry instance retrieved from OSGi context */
 	private final UserRegistry governanceRegistry;
@@ -94,12 +96,28 @@ public class RegistryServiceHelper
 		// Retrieve revision collection and determine latest revision
 		String[] items;
 		try
-		{
+		{	
+			// Resolve the the latest revision based on the actual available revisions
 			Collection apiRevisionCollection = (Collection) governanceRegistry.get(apiBasePath);
-			int latestRevision = apiRevisionCollection.getChildCount();
+			int latestRevision = -1;
+			String[] revisionPaths = apiRevisionCollection.getChildren();
+			for (String revPath : revisionPaths) {
+				String name = revPath.substring(revPath.lastIndexOf('/') + 1);
+				try {
+					int rev = Integer.parseInt(name);
+					if (rev > latestRevision) latestRevision = rev;
+				} catch (NumberFormatException ignored) {
+					// skip non-numeric children (e.g. "archives")
+				}
+			}
+			if (latestRevision < 0) {
+				throw new RegistryException("No numeric revisions found under: "
+				+ apiBasePath);
+			}
+			
 			logger.debug("Latest revision number for API " + apiUUID + ": " + latestRevision);
 
-			String apiRevisionPath = apiBasePath + File.separator + latestRevision;
+			String apiRevisionPath = apiBasePath + registryPathSeparator + latestRevision;
 			if (!governanceRegistry.resourceExists(apiRevisionPath))
 			{
 				logger.error("Revision path does not exist: " + apiRevisionPath);
